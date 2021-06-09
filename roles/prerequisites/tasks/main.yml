@@ -1,0 +1,25 @@
+---
+# tasks file for prerequisites
+- name: import the apt key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add repository
+  shell: |
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    apt-get update
+
+- name: Docker installation
+  apt:
+    name: docker-ce
+    state: latest
+- name: Start Docker
+  service:
+      name: docker
+      state: started
+  register: dockeroutput
+- name: Ensure the docker service is running
+  fail:
+   msg:  The docker service is not in 'running' state.
+  failed_when: dockeroutput.status.ActiveState != "active"
