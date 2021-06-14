@@ -1,6 +1,6 @@
 ---
 - hosts: all
   gather_facts: true
-  remote_user: root
+  remote_user: venmani
   roles:
   - role: prerequisites
